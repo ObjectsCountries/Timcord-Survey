@@ -48,8 +48,8 @@
       "question": {
         "type": "multiple_choice",
         "answers": {
-          "yes": "YEAAAH we got some DONUTS_1 DONUTS_2!",
-          "no": "NAWWWW we're outta DONUTS_1 DONUTS_2!"
+          "donut_loop_yes": "YEAAAH we got some DONUTS_1 DONUTS_2!",
+          "donut_loop_no": "NAWWWW we're outta DONUTS_1 DONUTS_2!"
         },
         "response": null
       }

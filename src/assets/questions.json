@@ -1,0 +1,69 @@
+{
+  "DONUTS_1": [
+    "apple",
+    "banana",
+    "cherry",
+    "orange",
+    "pomegranate",
+    "boston",
+    "mango",
+    "mango mango",
+    "mango mango those who know",
+    "still",
+    "bavarian creme filled",
+    "cinnamon",
+    "peculiar",
+    "sugary",
+    "jelly",
+    "stupid-flavored",
+    "potato",
+    "CaseOh-sized"
+  ],
+  "DONUTS_2": ["fritters", "donuts", "rolls", "water", "knishes", "cremes", "deez nuts", "donuts"],
+  "question_types": ["multiple_choice", "written_response", "other"],
+  "questions": [
+    {
+      "id": "DEBUG_intro",
+      "index": -1,
+      "title": "Welcome! Please choose a color.",
+      "substitutions": [],
+      "question": {
+        "type": "multiple_choice",
+        "answers": {
+          "red": "Red",
+          "orange": "Orange",
+          "yellow": "Yellow",
+          "green": "Green",
+          "blue": "Blue",
+          "purple": "Purple"
+        },
+        "response": null
+      }
+    },
+    {
+      "id": "DEBUG_substitution",
+      "index": -1,
+      "title": "You got any DONUTS_1 DONUTS_2?",
+      "substitutions": ["DONUTS_1", "DONUTS_2"],
+      "question": {
+        "type": "multiple_choice",
+        "answers": {
+          "yes": "YEAAAH we got some DONUTS_1 DONUTS_2!",
+          "no": "NAWWWW we're outta DONUTS_1 DONUTS_2!"
+        },
+        "response": null
+      }
+    },
+    {
+      "id": "DEBUG_written",
+      "index": -1,
+      "title": "Write a message that only Vice will see.",
+      "substitutions": [],
+      "question": {
+        "type": "written_response",
+        "character_limit": 50,
+        "response": null
+      }
+    }
+  ]
+}

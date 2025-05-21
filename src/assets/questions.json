@@ -23,7 +23,7 @@
   "question_types": ["multiple_choice", "written_response", "other"],
   "questions": [
     {
-      "id": "DEBUG_intro",
+      "id": "DEBUG_intro_NUMBER",
       "index": -1,
       "title": "Welcome! Please choose a color.",
       "substitutions": [],
@@ -41,7 +41,7 @@
       }
     },
     {
-      "id": "DEBUG_substitution",
+      "id": "DEBUG_substitution_repetition_NUMBER",
       "index": -1,
       "title": "You got any DONUTS_1 DONUTS_2?",
       "substitutions": ["DONUTS_1", "DONUTS_2"],
@@ -55,7 +55,7 @@
       }
     },
     {
-      "id": "DEBUG_written",
+      "id": "DEBUG_written_NUMBER",
       "index": -1,
       "title": "Write a message that only Vice will see.",
       "substitutions": [],

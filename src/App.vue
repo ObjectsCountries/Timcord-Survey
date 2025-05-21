@@ -5,5 +5,5 @@ const store = useQuestionInfoStore()
 </script>
 
 <template>
-  <SurveyQuestion :key="store.currentResponse"/>
+  <SurveyQuestion :key="store.buttonPressed" />
 </template>

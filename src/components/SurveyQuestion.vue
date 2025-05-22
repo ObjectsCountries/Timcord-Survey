@@ -10,7 +10,13 @@ import surveyQuestions from '../assets/questions.json'
       v-model="store.currentAnswer"
       type="radio"
       :label="store.currentQuestion.title"
-      :options="store.currentQuestion.question.answers"
+      :options="
+        Object.fromEntries(
+          store.currentQuestion.question.answers.map(function (o) {
+            return [o.id, o.text]
+          }),
+        )
+      "
       :checked="store.currentAnswer ?? false"
     />
   </div>
@@ -29,8 +35,8 @@ import surveyQuestions from '../assets/questions.json'
   <FormKit
     type="button"
     @click="store.nextQuestion"
-    :disabled="store.currentAnswer ?? true"
-    v-if="store.currentIndex < surveyQuestions.questions.length - 1"
+    :disabled="!store.currentAnswer"
+    v-if="store.currentIndex < surveyQuestions[store.debug].length - 1"
     >Next</FormKit
   >
 </template>

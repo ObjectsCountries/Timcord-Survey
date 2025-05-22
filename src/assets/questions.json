@@ -8,7 +8,6 @@
       "pomegranate",
       "boston",
       "mango",
-      "mango mango",
       "mango mango those who know",
       "still",
       "bavarian creme filled",
@@ -26,15 +25,22 @@
   "questions": [
     {
       "id": "theming",
-      "index": -1,
       "title": "Welcome! Please choose a theme.",
       "substitutions": [],
       "question": {
         "type": "multiple_choice",
-        "answers": {
-          "light": "Light Mode",
-          "dark": "Dark Mode"
-        },
+        "answers": [
+          {
+            "id": "light",
+            "text": "Light Mode",
+            "destination": 1
+          },
+          {
+            "id": "dark",
+            "text": "Dark Mode",
+            "destination": 1
+          }
+        ],
         "response": null
       }
     }
@@ -42,39 +48,68 @@
   "debug_questions": [
     {
       "id": "DEBUG_intro",
-      "index": -1,
       "title": "Welcome! Please choose a color.",
       "substitutions": [],
       "question": {
         "type": "multiple_choice",
-        "answers": {
-          "red": "Red",
-          "orange": "Orange",
-          "yellow": "Yellow",
-          "green": "Green",
-          "blue": "Blue",
-          "purple": "Purple"
-        },
+        "answers": [
+          {
+            "id": "red",
+            "text": "Red",
+            "destination": 1
+          },
+          {
+            "id": "orange",
+            "text": "Orange",
+            "destination": 1
+          },
+          {
+            "id": "yellow",
+            "text": "Yellow",
+            "destination": 1
+          },
+          {
+            "id": "green",
+            "text": "Green",
+            "destination": 1
+          },
+          {
+            "id": "blue",
+            "text": "Blue",
+            "destination": 1
+          },
+          {
+            "id": "purple",
+            "text": "Purple",
+            "destination": 1
+          }
+        ],
         "response": null
       }
     },
     {
       "id": "DEBUG_substitution_repetition",
-      "index": -1,
       "title": "You got any DONUTS_1 DONUTS_2?",
       "substitutions": ["DONUTS_1", "DONUTS_2"],
       "question": {
         "type": "multiple_choice",
-        "answers": {
-          "donut_loop_yes": "YEAAAH we got some DONUTS_1 DONUTS_2!",
-          "donut_loop_no": "NAWWWW we're outta DONUTS_1 DONUTS_2!"
-        },
+        "answers": [
+          {
+            "id": "donut_loop_yes",
+            "text": "YEAAAH we got some DONUTS_1 DONUTS_2!",
+            "destination": 2
+          },
+          {
+            "id": "donut_loop_no",
+            "text": "NAWWWW we're outta DONUTS_1 DONUTS_2!",
+            "destination": 1
+          }
+        ],
         "response": null
       }
     },
     {
       "id": "DEBUG_written",
-      "index": -1,
       "title": "Write a message that only Vice will see.",
       "substitutions": [],
       "question": {

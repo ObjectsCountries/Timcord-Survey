@@ -44,9 +44,22 @@ describe('Question Info Store Test', () => {
     store.nextQuestion()
     expect(store.currentQuestion.id).toBe('DEBUG_substitution_repetition')
     store.previousQuestion()
+    expect(store.currentQuestion.id).toBe('DEBUG_substitution_repetition')
     store.currentAnswer = 'donut_loop_yes'
     store.nextQuestion()
     expect(store.currentQuestion.id).toBe('DEBUG_written')
   })
 
+  it('can continue the donut loop', () => {
+    store.currentAnswer = 'orange'
+    store.nextQuestion()
+    store.currentAnswer = 'donut_loop_yes'
+    store.nextQuestion()
+    expect(store.currentQuestion.id).toBe('DEBUG_written')
+    store.previousQuestion()
+    expect(store.currentQuestion.id).toBe('DEBUG_substitution_repetition')
+    store.currentAnswer = 'donut_loop_no'
+    store.nextQuestion()
+    expect(store.currentQuestion.id).toBe('DEBUG_substitution_repetition')
+  })
 })

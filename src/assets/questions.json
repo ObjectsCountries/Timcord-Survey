@@ -1,29 +1,47 @@
 {
-  "DONUTS_1": [
-    "apple",
-    "banana",
-    "cherry",
-    "orange",
-    "pomegranate",
-    "boston",
-    "mango",
-    "mango mango",
-    "mango mango those who know",
-    "still",
-    "bavarian creme filled",
-    "cinnamon",
-    "peculiar",
-    "sugary",
-    "jelly",
-    "stupid-flavored",
-    "potato",
-    "CaseOh-sized"
-  ],
-  "DONUTS_2": ["fritters", "donuts", "rolls", "water", "knishes", "cremes", "deez nuts", "donuts"],
+  "substitutions": {
+    "DONUTS_1": [
+      "apple",
+      "banana",
+      "cherry",
+      "orange",
+      "pomegranate",
+      "boston",
+      "mango",
+      "mango mango",
+      "mango mango those who know",
+      "still",
+      "bavarian creme filled",
+      "cinnamon",
+      "peculiar",
+      "sugary",
+      "jelly",
+      "stupid-flavored",
+      "potato",
+      "CaseOh-sized"
+    ],
+    "DONUTS_2": ["fritters", "donuts", "rolls", "water", "knishes", "cremes", "deez nuts", "donuts"]
+  },
   "question_types": ["multiple_choice", "written_response", "other"],
   "questions": [
     {
-      "id": "DEBUG_intro_NUMBER",
+      "id": "theming",
+      "index": -1,
+      "title": "Welcome! Please choose a theme.",
+      "substitutions": [],
+      "question": {
+        "type": "multiple_choice",
+        "answers": {
+          "light": "Light Mode",
+          "dark": "Dark Mode"
+        },
+        "response": null
+      }
+    }
+  ],
+  "debug_questions": [
+    {
+      "id": "DEBUG_intro",
       "index": -1,
       "title": "Welcome! Please choose a color.",
       "substitutions": [],
@@ -41,7 +59,7 @@
       }
     },
     {
-      "id": "DEBUG_substitution_repetition_NUMBER",
+      "id": "DEBUG_substitution_repetition",
       "index": -1,
       "title": "You got any DONUTS_1 DONUTS_2?",
       "substitutions": ["DONUTS_1", "DONUTS_2"],
@@ -55,7 +73,7 @@
       }
     },
     {
-      "id": "DEBUG_written_NUMBER",
+      "id": "DEBUG_written",
       "index": -1,
       "title": "Write a message that only Vice will see.",
       "substitutions": [],

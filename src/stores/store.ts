@@ -5,10 +5,16 @@ import surveyQuestions from '../assets/questions.json'
 export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const currentIndex = ref(0)
   const questionsAnswered = ref(0)
-  const currentQuestion = ref(JSON.parse(JSON.stringify(surveyQuestions.questions[0])))
+  const debug = ref("questions")
+  const currentQuestion = ref(JSON.parse(JSON.stringify(surveyQuestions[debug.value][0])))
   const currentAnswer = ref(null)
   const buttonPressed = ref(false)
   const answers = ref([])
+
+  function setUpUnitTests() {
+    debug.value = "debug_questions"
+    currentQuestion.value = (JSON.parse(JSON.stringify(surveyQuestions[debug.value][0])))
+  }
 
   function newQuestion() {
     answers.value[questionsAnswered.value] = JSON.parse(JSON.stringify(currentQuestion.value))
@@ -16,14 +22,14 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
       currentIndex.value++
     }
     currentQuestion.value = JSON.parse(
-      JSON.stringify(surveyQuestions.questions[currentIndex.value]),
+      JSON.stringify(surveyQuestions[debug.value][currentIndex.value]),
     )
 
     currentAnswer.value = null
 
     for (const sub of currentQuestion.value.substitutions) {
       const replacement =
-        surveyQuestions[sub][Math.floor(Math.random() * surveyQuestions[sub].length)]
+        surveyQuestions.substitutions[sub][Math.floor(Math.random() * surveyQuestions.substitutions[sub].length)]
       currentQuestion.value.title = currentQuestion.value.title.replace(sub, replacement)
       for (const ansID of Object.keys(currentQuestion.value.question.answers)) {
         currentQuestion.value.question.answers[ansID] = currentQuestion.value.question.answers[
@@ -38,7 +44,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     answers.value[questionsAnswered.value] = JSON.parse(JSON.stringify(currentQuestion.value))
     questionsAnswered.value--
     currentQuestion.value = JSON.parse(JSON.stringify(answers.value[questionsAnswered.value]))
-    currentIndex.value = surveyQuestions.questions.findIndex(
+    currentIndex.value = surveyQuestions[debug.value].findIndex(
       (x) => x.id === currentQuestion.value.id,
     )
     currentAnswer.value = currentQuestion.value.question.response
@@ -65,7 +71,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
           JSON.stringify(answers.value[questionsAnswered.value + 1]),
         )
         currentAnswer.value = currentQuestion.value.question.response
-        currentIndex.value = surveyQuestions.questions.findIndex(
+        currentIndex.value = surveyQuestions[debug.value].findIndex(
           (x) => x.id === currentQuestion.value.id,
         )
       }
@@ -88,6 +94,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     currentAnswer,
     buttonPressed,
     answers,
+    setUpUnitTests,
     previousQuestion,
     nextQuestion,
   }

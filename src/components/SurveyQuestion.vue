@@ -2,7 +2,6 @@
 import { useQuestionInfoStore } from '../stores/store.ts'
 const store = useQuestionInfoStore()
 import surveyQuestions from '../assets/questions.json'
-store.currentQuestion = JSON.parse(JSON.stringify(surveyQuestions.questions[store.currentIndex]))
 </script>
 
 <template>
@@ -30,6 +29,7 @@ store.currentQuestion = JSON.parse(JSON.stringify(surveyQuestions.questions[stor
   <FormKit
     type="button"
     @click="store.nextQuestion"
+    :disabled="store.currentAnswer ?? true"
     v-if="store.currentIndex < surveyQuestions.questions.length - 1"
     >Next</FormKit
   >

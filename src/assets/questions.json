@@ -1,6 +1,6 @@
 {
   "substitutions": {
-    "DONUTS_1": [
+    "DEBUG_substitution_1": [
       "apple",
       "banana",
       "cherry",
@@ -19,30 +19,45 @@
       "potato",
       "CaseOh-sized"
     ],
-    "DONUTS_2": ["fritters", "donuts", "rolls", "water", "knishes", "cremes", "deez nuts", "donuts"]
+    "DEBUG_substitution_2": [
+      "fritters",
+      "donuts",
+      "rolls",
+      "water",
+      "knishes",
+      "cremes",
+      "deez nuts",
+      "donuts"
+    ]
   },
-  "question_types": ["multiple_choice", "written_response", "other"],
   "questions": [
     {
       "id": "theming",
       "title": "Welcome! Please choose a theme.",
       "substitutions": [],
-      "question": {
-        "type": "multiple_choice",
-        "answers": [
-          {
-            "id": "light",
-            "text": "Light Mode",
-            "destination": 1
-          },
-          {
-            "id": "dark",
-            "text": "Dark Mode",
-            "destination": 1
-          }
-        ],
-        "response": null
-      }
+      "question_type": "multiple_choice",
+      "answers": [
+        {
+          "id": "theming_light",
+          "text": "Light Mode",
+          "destination": "end"
+        },
+        {
+          "id": "theming_dark",
+          "text": "Dark Mode",
+          "destination": "end"
+        }
+      ],
+      "response": null,
+      "destination": null
+    },
+    {
+      "id": "end",
+      "title": "Finished!",
+      "substitutions": [],
+      "question_type": "end",
+      "response": null,
+      "destination": null
     }
   ],
   "debug_questions": [
@@ -50,73 +65,107 @@
       "id": "DEBUG_intro",
       "title": "Welcome! Please choose a color.",
       "substitutions": [],
-      "question": {
-        "type": "multiple_choice",
-        "answers": [
-          {
-            "id": "red",
-            "text": "Red",
-            "destination": 1
-          },
-          {
-            "id": "orange",
-            "text": "Orange",
-            "destination": 1
-          },
-          {
-            "id": "yellow",
-            "text": "Yellow",
-            "destination": 1
-          },
-          {
-            "id": "green",
-            "text": "Green",
-            "destination": 1
-          },
-          {
-            "id": "blue",
-            "text": "Blue",
-            "destination": 1
-          },
-          {
-            "id": "purple",
-            "text": "Purple",
-            "destination": 1
-          }
-        ],
-        "response": null
-      }
+      "question_type": "multiple_choice",
+      "answers": [
+        {
+          "id": "DEBUG_intro_red",
+          "text": "Red",
+          "destination": "DEBUG_substitution"
+        },
+        {
+          "id": "DEBUG_intro_orange",
+          "text": "Orange",
+          "destination": "DEBUG_substitution"
+        },
+        {
+          "id": "DEBUG_intro_yellow",
+          "text": "Yellow",
+          "destination": "DEBUG_substitution"
+        },
+        {
+          "id": "DEBUG_intro_green",
+          "text": "Green",
+          "destination": "DEBUG_substitution"
+        },
+        {
+          "id": "DEBUG_intro_blue",
+          "text": "Blue",
+          "destination": "DEBUG_substitution"
+        },
+        {
+          "id": "DEBUG_intro_purple",
+          "text": "Purple",
+          "destination": "DEBUG_substitution"
+        }
+      ],
+      "response": null,
+      "destination": null
     },
     {
-      "id": "DEBUG_substitution_repetition",
-      "title": "You got any DONUTS_1 DONUTS_2?",
-      "substitutions": ["DONUTS_1", "DONUTS_2"],
-      "question": {
-        "type": "multiple_choice",
-        "answers": [
-          {
-            "id": "donut_loop_yes",
-            "text": "YEAAAH we got some DONUTS_1 DONUTS_2!",
-            "destination": 2
-          },
-          {
-            "id": "donut_loop_no",
-            "text": "NAWWWW we're outta DONUTS_1 DONUTS_2!",
-            "destination": 1
-          }
-        ],
-        "response": null
-      }
+      "id": "DEBUG_substitution",
+      "title": "You got any DEBUG_substitution_1 DEBUG_substitution_2?",
+      "substitutions": ["DEBUG_substitution_1", "DEBUG_substitution_2"],
+      "question_type": "multiple_choice",
+      "answers": [
+        {
+          "id": "DEBUG_substitution_yes",
+          "text": "YEAAAH we got some DEBUG_substitution_1 DEBUG_substitution_2!",
+          "destination": "DEBUG_branch"
+        },
+        {
+          "id": "DEBUG_substitution_no",
+          "text": "NAWWWW we're outta DEBUG_substitution_1 DEBUG_substitution_2!",
+          "destination": "DEBUG_substitution"
+        }
+      ],
+      "response": null,
+      "destination": null
     },
     {
-      "id": "DEBUG_written",
-      "title": "Write a message that only Vice will see.",
+      "id": "DEBUG_branch",
+      "title": "Choose your path.",
       "substitutions": [],
-      "question": {
-        "type": "written_response",
-        "character_limit": 50,
-        "response": null
-      }
+      "question_type": "multiple_choice",
+      "answers": [
+        {
+          "id": "DEBUG_branch_left",
+          "text": "Left",
+          "destination": "DEBUG_path_left"
+        },
+        {
+          "id": "DEBUG_branch_right",
+          "text": "Right",
+          "destination": "DEBUG_path_right"
+        }
+      ],
+      "response": null,
+      "destination": null
+    },
+    {
+      "id": "DEBUG_path_left",
+      "title": "Left path chosen. Write a message.",
+      "substitutions": [],
+      "question_type": "written_response",
+      "character_limit": 100,
+      "response": null,
+      "destination": "DEBUG_finish"
+    },
+    {
+      "id": "DEBUG_path_right",
+      "title": "Right path chosen. Write a message.",
+      "substitutions": [],
+      "question_type": "written_response",
+      "character_limit": 100,
+      "response": null,
+      "destination": "DEBUG_finish"
+    },
+    {
+      "id": "DEBUG_finish",
+      "title": "Reached end of debug.",
+      "substitutions": [],
+      "question_type": "end",
+      "response": null,
+      "destination": null
     }
   ]
 }

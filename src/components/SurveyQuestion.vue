@@ -7,7 +7,7 @@ import surveyQuestions from '../assets/questions.json'
 <template>
   <div v-if="store.currentQuestion.question.type === 'multiple_choice'">
     <FormKit
-      v-model="store.currentAnswer"
+      v-model="store.currentResponse"
       type="radio"
       :label="store.currentQuestion.title"
       :options="
@@ -17,7 +17,7 @@ import surveyQuestions from '../assets/questions.json'
           }),
         )
       "
-      :checked="store.currentAnswer ?? false"
+      :checked="store.currentResponse ?? false"
     />
   </div>
 
@@ -29,14 +29,20 @@ import surveyQuestions from '../assets/questions.json'
     <h1>j</h1>
   </div>
 
-  <FormKit type="button" @click="store.previousQuestion" v-if="store.currentIndex > 0"
+  <FormKit
+    type="button"
+    @click="store.previousQuestion"
+    v-if="store.currentDestination !== surveyQuestions[store.debug][0].id"
     >Previous</FormKit
   >
   <FormKit
     type="button"
     @click="store.nextQuestion"
-    :disabled="!store.currentAnswer"
-    v-if="store.currentIndex < surveyQuestions[store.debug].length - 1"
+    :disabled="!store.currentResponse"
+    v-if="
+      store.currentDestination !==
+      surveyQuestions[store.debug][surveyQuestions[store.debug].length - 1].id
+    "
     >Next</FormKit
   >
 </template>

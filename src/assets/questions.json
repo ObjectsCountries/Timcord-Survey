@@ -40,19 +40,19 @@
         {
           "id": "theming_light",
           "text": "Light Mode",
-          "destination": "end"
+          "destination": "finished"
         },
         {
           "id": "theming_dark",
           "text": "Dark Mode",
-          "destination": "end"
+          "destination": "finished"
         }
       ],
       "response": null,
       "destination": null
     },
     {
-      "id": "end",
+      "id": "finished",
       "title": "Finished!",
       "substitutions": [],
       "question_type": "end",

@@ -20,13 +20,14 @@ This is a survey meant for the members of Timcord, inspired by the analysis work
 ## Flowchart
 
 ```mermaid
-
-```
-
-## Debug Flowchart
-
-```mermaid
-
+---
+title: Timcord Survey Flowchart
+---
+graph 
+theming["theming"]
+finished["finished"]
+theming --->|theming_light| finished
+theming --->|theming_dark| finished
 ```
 
 ## Contributing

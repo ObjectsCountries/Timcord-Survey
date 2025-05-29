@@ -5,14 +5,10 @@ on:
     branches: [ "main" ]
     paths:
       - "/src/assets/questions.json"
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python 3.13
@@ -27,7 +23,7 @@ jobs:
       run: python3 flowcharts.py
     - name: Commit changes
       run: |
-        git config --local user.name  ${{ github.actor }}
+        git config --local user.name ${{ github.actor }}
         git config --local user.email "${{ github.actor }}@users.noreply.github.com"
         git add README.md
         git commit -m 'ACTION: Update flowcharts'

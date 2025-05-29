@@ -7,7 +7,7 @@ on:
       - "src/assets/questions.json"
 
 jobs:
-  build:
+  flowcharts:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

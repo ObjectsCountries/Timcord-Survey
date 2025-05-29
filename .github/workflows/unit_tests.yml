@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - "src/*"
+      - "src/**"
 
 jobs:
   build:
@@ -15,4 +15,3 @@ jobs:
       uses: actions/setup-node@v4
     - run: npm ci
     - run: npm run test:unit
-

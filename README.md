@@ -30,6 +30,12 @@ theming --->|theming_light| finished
 theming --->|theming_dark| finished
 ```
 
+## Debug Flowchart
+
+```mermaid
+
+```
+
 ## Contributing
 
 WHAT

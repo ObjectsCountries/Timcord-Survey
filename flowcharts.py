@@ -38,12 +38,12 @@ def _make_flowchart(category):
                 )
             )
 
-    chart = MermaidDiagram(title="Timcord Survey Flowchart", nodes=nodes, links=links)
+    chart = MermaidDiagram(title=f"Timcord Survey {}", nodes=nodes, links=links)
 
     with open("README.md", "rt+") as f:
         full_file = f.read()
         full_file = re.sub(
-            f"## {_CATEGORIES[category]}\\n\\n```mermaid\\n.*\\n```",
+            f"## {_CATEGORIES[category]}\\n\\n```mermaid\\n(.*?)\\n```",
             f"## {_CATEGORIES[category]}\n\n```mermaid\n" + str(chart) + "\n```",
             full_file,
             flags=re.DOTALL,

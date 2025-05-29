@@ -24,7 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install python_mermaid
     - name: Make flowcharts
-      run: python3 flowchart.py
+      run: python3 flowcharts.py
     - name: Commit changes
       run: |
         git config --local user.name  ${{ github.actor }}

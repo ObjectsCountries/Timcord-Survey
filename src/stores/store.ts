@@ -1,8 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import surveyQuestions from '../assets/questions.json'
-import { parse } from 'flowchart.js'
-import { SequenceDiagram } from 'type-mermaid'
 
 export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const currentDestination = ref(null)
@@ -12,18 +10,6 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const currentResponse = ref(null)
   const buttonPressed = ref(false)
   const answers = ref([])
-
-  function makeFlowchart() {
-    const fc = [""]
-    fc.push(`    ${currentQuestion.value.id}=>start: ${currentQuestion.value.title}`)
-
-    const fc_result = fc.join('\n')
-
-
-    const path = `${debug.value}_flowchart.svg`;
-
-    const
-  }
 
   function setUpUnitTests() {
     debug.value = 'debug_questions'
@@ -102,7 +88,6 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     currentResponse,
     buttonPressed,
     answers,
-    makeFlowchart,
     setUpUnitTests,
     previousQuestion,
     nextQuestion,

@@ -83,8 +83,4 @@ describe('Question Info Store Test', () => {
     store.nextQuestion()
     expect(store.currentQuestion.id).toBe('DEBUG_finish')
   })
-
-  it('draws the flowchart', () => {
-    store.makeFlowchart()
-  })
 })

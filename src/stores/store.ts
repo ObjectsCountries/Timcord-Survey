@@ -68,10 +68,9 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     }
 
     if (answers.value.length > questionsAnswered.value + 1) {
-      const questionLocation = answers.value.find(x => x.id == currentQuestion.value.id)
+      const questionLocation = answers.value.find((x) => x.id == currentQuestion.value.id)
       currentResponse.value = questionLocation === undefined ? null : questionLocation.response
-    }
-    else {
+    } else {
       currentResponse.value = null
     }
 

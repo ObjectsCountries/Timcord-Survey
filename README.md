@@ -1,6 +1,6 @@
 # Timcord Survey
 
-![Unit Test Status](https://img.shields.io/github/actions/workflow/status/ObjectsCountries/Timcord-Survey/main.yml?logo=nodedotjs&label=Unit%20Tests)
+![Unit Test Status](https://img.shields.io/github/actions/workflow/status/ObjectsCountries/Timcord-Survey/unit_tests.yml?logo=nodedotjs&label=Unit%20Tests)
 
 [![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/timotainment)
 

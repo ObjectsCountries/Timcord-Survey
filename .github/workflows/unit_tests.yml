@@ -2,11 +2,11 @@ name: Unit Tests
 
 on:
   push:
+    paths:
+      - "/src/"
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  paths:
-    - "/src/"
 
 jobs:
   build:
@@ -17,3 +17,4 @@ jobs:
       uses: actions/setup-node@v4
     - run: npm ci
     - run: npm run test:unit
+

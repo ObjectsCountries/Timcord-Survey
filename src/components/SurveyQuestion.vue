@@ -5,14 +5,14 @@ import surveyQuestions from '../assets/questions.json'
 </script>
 
 <template>
-  <div v-if="store.currentQuestion.question.type === 'multiple_choice'">
+  <div v-if="store.currentQuestion.question_type === 'multiple_choice'">
     <FormKit
       v-model="store.currentResponse"
       type="radio"
       :label="store.currentQuestion.title"
       :options="
         Object.fromEntries(
-          store.currentQuestion.question.answers.map(function (o) {
+          store.currentQuestion.answers.map(function (o) {
             return [o.id, o.text]
           }),
         )
@@ -21,7 +21,7 @@ import surveyQuestions from '../assets/questions.json'
     />
   </div>
 
-  <div v-else-if="store.currentQuestion.question.type === 'written_response'">
+  <div v-else-if="store.currentQuestion.question_type === 'written_response'">
     <h1>amogus</h1>
   </div>
 
@@ -32,7 +32,7 @@ import surveyQuestions from '../assets/questions.json'
   <FormKit
     type="button"
     @click="store.previousQuestion"
-    v-if="store.currentDestination !== surveyQuestions[store.debug][0].id"
+    v-if="store.currentQuestion.id !== surveyQuestions[store.debug][0].id"
     >Previous</FormKit
   >
   <FormKit
@@ -40,7 +40,7 @@ import surveyQuestions from '../assets/questions.json'
     @click="store.nextQuestion"
     :disabled="!store.currentResponse"
     v-if="
-      store.currentDestination !==
+      store.currentQuestion.id !==
       surveyQuestions[store.debug][surveyQuestions[store.debug].length - 1].id
     "
     >Next</FormKit

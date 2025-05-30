@@ -1,71 +1,87 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import _ from 'lodash'
 import surveyQuestions from '../assets/questions.json'
+import { QuestionList, QuestionType, Question } from '../components/question.ts'
+import type { MultipleChoiceAnswer } from '../components/question.ts'
 
 export const useQuestionInfoStore = defineStore('questionInfo', () => {
-  const currentDestination = ref(null)
-  const questionsAnswered = ref(0)
-  const debug = ref('questions')
-  const currentQuestion = ref(JSON.parse(JSON.stringify(surveyQuestions[debug.value][0])))
-  const currentResponse = ref(null)
-  const buttonPressed = ref(false)
-  const answers = ref([])
+  const currentDestination = ref<string | null>(null)
+  const questionsAnswered = ref<number>(0)
+  const debug = ref<QuestionList>(QuestionList.questions)
+  const questionList = ref<Question[]>(getQuestionList(debug.value))
+  const currentQuestion = ref<Question>(_.cloneDeep(questionList.value[0]))
+  const currentResponse = ref<string | MultipleChoiceAnswer | null>(null)
+  const buttonPressed = ref<number>(0)
+  const answers = ref<Question[]>([])
+
+  function getQuestionList(qList: QuestionList): Question[] {
+    let questions = []
+    switch (qList) {
+      case QuestionList.debug_questions:
+        questions = surveyQuestions.debug_questions
+        break
+      case QuestionList.questions:
+        questions = surveyQuestions.questions
+        break
+      default:
+        questions = surveyQuestions.questions
+        break
+    }
+    questions = questions.map((question) => new Question(question))
+    return questions
+  }
 
   function setUpUnitTests() {
-    debug.value = 'debug_questions'
-    currentQuestion.value = JSON.parse(JSON.stringify(surveyQuestions[debug.value][0]))
+    currentDestination.value = null
+    questionsAnswered.value = 0
+    debug.value = QuestionList.debug_questions
+    questionList.value = getQuestionList(debug.value)
+    currentQuestion.value = _.cloneDeep(questionList.value[0])
+    currentResponse.value = null
+    buttonPressed.value = 0
+    answers.value = []
   }
 
   function previousQuestion() {
-    currentQuestion.value.response = currentResponse.value
-    answers.value[questionsAnswered.value] = JSON.parse(JSON.stringify(currentQuestion.value))
+    currentQuestion.value.submitAnswer(currentResponse.value)
+    answers.value[questionsAnswered.value] = currentQuestion.value
     questionsAnswered.value--
-    currentQuestion.value = JSON.parse(JSON.stringify(answers.value[questionsAnswered.value]))
+    currentQuestion.value = _.cloneDeep(answers.value[questionsAnswered.value])
     currentDestination.value = currentQuestion.value.destination
     currentResponse.value = currentQuestion.value.response
-    buttonPressed.value = true
-    buttonPressed.value = false
+    buttonPressed.value = 1
+    buttonPressed.value = 0
   }
 
   function nextQuestion() {
-    if (currentQuestion.value.question_type === 'multiple_choice') {
-      currentQuestion.value.destination = currentResponse.value
-    }
     if (currentResponse.value === currentQuestion.value.response) {
-      answers.value[questionsAnswered.value] = JSON.parse(JSON.stringify(currentQuestion.value))
+      currentQuestion.value.submitAnswer(currentResponse.value)
+      answers.value[questionsAnswered.value] = currentQuestion.value
       currentDestination.value = currentQuestion.value.destination
-      currentQuestion.value = JSON.parse(
-        JSON.stringify(
-          answers.value.length > questionsAnswered.value + 1
-            ? answers.value[questionsAnswered.value + 1]
-            : surveyQuestions[debug.value].find((x) => x.id === currentDestination.value),
-        ),
+      currentQuestion.value = _.cloneDeep(
+        answers.value.length > questionsAnswered.value + 1
+          ? answers.value[questionsAnswered.value + 1]
+          : (questionList.value.find((x) => x.id === currentDestination.value) ?? answers.value[0]),
       )
     } else {
-      currentQuestion.value.response = currentResponse.value
-      answers.value[questionsAnswered.value] = JSON.parse(JSON.stringify(currentQuestion.value))
-      if (currentQuestion.value.question_type === 'multiple_choice') {
-        currentDestination.value = currentQuestion.value.answers.find(
-          (x) => x.id === currentResponse.value,
+      currentQuestion.value.submitAnswer(currentResponse.value)
+      answers.value[questionsAnswered.value] = currentQuestion.value
+      if (currentQuestion.value.question_type === QuestionType.multiple_choice) {
+        currentDestination.value = (
+          currentQuestion.value.answers.find(
+            (x) => x.id === ((currentResponse.value as MultipleChoiceAnswer).id ?? ''),
+          ) ?? { destination: '' }
         ).destination
       } else {
         currentDestination.value = currentQuestion.value.destination
       }
-      currentQuestion.value = JSON.parse(
-        JSON.stringify(surveyQuestions[debug.value].find((x) => x.id === currentDestination.value)),
+      currentQuestion.value = _.cloneDeep(
+        questionList.value.find((x) => x.id === currentDestination.value) ?? answers.value[1],
       )
     }
 
-    for (const sub of currentQuestion.value.substitutions) {
-      const replacement =
-        surveyQuestions.substitutions[sub][
-          Math.floor(Math.random() * surveyQuestions.substitutions[sub].length)
-        ]
-      currentQuestion.value.title = currentQuestion.value.title.replace(sub, replacement)
-      for (const answer of currentQuestion.value.answers) {
-        answer.text = answer.text.replace(sub, replacement)
-      }
-    }
+    currentQuestion.value.substitute()
 
     if (answers.value.length > questionsAnswered.value + 1) {
       const questionLocation = answers.value.find((x) => x.id == currentQuestion.value.id)
@@ -75,14 +91,15 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     }
 
     questionsAnswered.value++
-    buttonPressed.value = true
-    buttonPressed.value = false
+    buttonPressed.value = 1
+    buttonPressed.value = 0
   }
 
   return {
     currentDestination,
     questionsAnswered,
     debug,
+    questionList,
     currentQuestion,
     currentResponse,
     buttonPressed,

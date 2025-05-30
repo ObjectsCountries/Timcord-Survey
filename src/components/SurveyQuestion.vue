@@ -1,27 +1,29 @@
 <script setup lang="ts">
 import { useQuestionInfoStore } from '../stores/store.ts'
 const store = useQuestionInfoStore()
-import surveyQuestions from '../assets/questions.json'
+import { QuestionType } from './question.ts'
+import type { MultipleChoiceAnswer } from './question.ts'
 </script>
 
 <template>
-  <div v-if="store.currentQuestion.question_type === 'multiple_choice'">
+  <div v-if="store.currentQuestion.question_type === QuestionType.multiple_choice">
     <FormKit
-      v-model="store.currentResponse"
+      v-model="store.currentResponse as MultipleChoiceAnswer"
       type="radio"
       :label="store.currentQuestion.title"
       :options="
-        Object.fromEntries(
-          store.currentQuestion.answers.map(function (o) {
-            return [o.id, o.text]
-          }),
-        )
+        store.currentQuestion.answers.map((o: MultipleChoiceAnswer) => {
+          return {
+            label: o.text,
+            value: o,
+          }
+        })
       "
       :checked="store.currentResponse ?? false"
     />
   </div>
 
-  <div v-else-if="store.currentQuestion.question_type === 'written_response'">
+  <div v-else-if="store.currentQuestion.question_type === QuestionType.written_response">
     <h1>amogus</h1>
   </div>
 
@@ -32,17 +34,14 @@ import surveyQuestions from '../assets/questions.json'
   <FormKit
     type="button"
     @click="store.previousQuestion"
-    v-if="store.currentQuestion.id !== surveyQuestions[store.debug][0].id"
+    v-if="store.currentQuestion.id !== store.questionList[0].id"
     >Previous</FormKit
   >
   <FormKit
     type="button"
     @click="store.nextQuestion"
     :disabled="!store.currentResponse"
-    v-if="
-      store.currentQuestion.id !==
-      surveyQuestions[store.debug][surveyQuestions[store.debug].length - 1].id
-    "
+    v-if="store.currentQuestion.id !== store.questionList[store.questionList.length - 1].id"
     >Next</FormKit
   >
 </template>

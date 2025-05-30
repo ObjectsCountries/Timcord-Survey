@@ -40,19 +40,28 @@
         {
           "id": "theming_light",
           "text": "Light Mode",
-          "destination": "finished"
+          "destination": "writing"
         },
         {
           "id": "theming_dark",
           "text": "Dark Mode",
-          "destination": "finished"
+          "destination": "writing"
         }
       ],
       "response": null,
       "destination": null
     },
     {
-      "id": "finished",
+      "id": "writing",
+      "title": "Write a personal message to Vice.",
+      "substitutions": [],
+      "question_type": "written_response",
+      "character_limit": 200,
+      "response": null,
+      "destination": "finish"
+    },
+    {
+      "id": "finish",
       "title": "Finished!",
       "substitutions": [],
       "question_type": "end",

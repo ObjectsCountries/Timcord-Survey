@@ -1,12 +1,7 @@
 import surveyQuestions from '../assets/questions.json'
 
-export class Substitutions {
+interface Substitutions {
   [to_replace: string]: string[]
-}
-
-export enum QuestionList {
-  debug_questions,
-  questions,
 }
 
 export interface MultipleChoiceAnswer {
@@ -22,7 +17,7 @@ export enum QuestionType {
   other,
 }
 
-export class Question {
+export default class Question {
   id: string
   title: string
   substitutions: Substitutions = surveyQuestions.substitutions as Substitutions

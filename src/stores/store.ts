@@ -2,8 +2,13 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import _ from 'lodash'
 import surveyQuestions from '../assets/questions.json'
-import { QuestionList, QuestionType, Question } from '../components/question.ts'
+import Question from '../components/question.ts'
 import type { MultipleChoiceAnswer } from '../components/question.ts'
+
+enum QuestionList {
+  debug_questions,
+  questions,
+}
 
 export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const currentDestination = ref<string | null>(null)
@@ -11,7 +16,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const debug = ref<QuestionList>(QuestionList.questions)
   const questionList = ref<Question[]>(getQuestionList(debug.value))
   const currentQuestion = ref<Question>(_.cloneDeep(questionList.value[0]))
-  const currentResponse = ref<string | MultipleChoiceAnswer | null>(null)
+  const currentResponse = ref<MultipleChoiceAnswer | string | null>(null)
   const buttonPressed = ref<number>(0)
   const answers = ref<Question[]>([])
 
@@ -67,17 +72,9 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     } else {
       currentQuestion.value.submitAnswer(currentResponse.value)
       answers.value[questionsAnswered.value] = currentQuestion.value
-      if (currentQuestion.value.question_type === QuestionType.multiple_choice) {
-        currentDestination.value = (
-          currentQuestion.value.answers.find(
-            (x) => x.id === ((currentResponse.value as MultipleChoiceAnswer).id ?? ''),
-          ) ?? { destination: '' }
-        ).destination
-      } else {
-        currentDestination.value = currentQuestion.value.destination
-      }
+      currentDestination.value = currentQuestion.value.destination
       currentQuestion.value = _.cloneDeep(
-        questionList.value.find((x) => x.id === currentDestination.value) ?? answers.value[1],
+        questionList.value.find((x) => x.id === currentDestination.value) ?? answers.value[0],
       )
     }
 
@@ -85,7 +82,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
 
     if (answers.value.length > questionsAnswered.value + 1) {
       const questionLocation = answers.value.find((x) => x.id == currentQuestion.value.id)
-      currentResponse.value = questionLocation === undefined ? null : questionLocation.response
+      currentResponse.value = ((questionLocation as Question) ?? { response: null }).response
     } else {
       currentResponse.value = null
     }

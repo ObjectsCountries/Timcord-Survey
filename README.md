@@ -25,9 +25,11 @@ title: Timcord Survey Flowchart
 ---
 graph 
 theming["theming"]
-finished["finished"]
-theming --->|theming_light| finished
-theming --->|theming_dark| finished
+writing["writing"]
+finish["finish"]
+theming --->|theming_light| writing
+theming --->|theming_dark| writing
+writing --->|written_response| finish
 ```
 
 ## Debug Flowchart

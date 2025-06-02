@@ -1,23 +1,28 @@
 #!/usr/bin/env python3
 
 from json import load
+from typing import TypeAlias
 import re
 
 from python_mermaid.diagram import MermaidDiagram, Node, Link
 
-_CATEGORIES = {
-    "debug_questions": "Debug Flowchart",
-    "questions": "Flowchart"
+_CATEGORIES: dict[str, str] = {
+    "DEBUG_": "Debug",
+    "": ""
 }
 
+_JSON: TypeAlias = dict[str, "_JSON"] | list["_JSON"] | str | int | float | bool | None
 
-def _make_flowchart(category):
-    questions = {}
+def _make_flowchart(category: str) -> MermaidDiagram:
+    questions: _JSON = {}
+    substitutions: _JSON = {}
     with open("src/assets/questions.json") as f:
-        questions = load(f)[category]
+        survey_questions: _JSON = load(f)
+        questions = survey_questions[category + "questions"]
+        substitutions = survey_questions[category + "substitutions"]
 
-    nodes = [Node(question["id"]) for question in questions]
-    links = []
+    nodes: list[Node] = [Node(question["id"]) for question in questions]
+    links: list[Link] = []
 
     for question in questions:
         if question["question_type"] == "multiple_choice":
@@ -38,24 +43,24 @@ def _make_flowchart(category):
                 )
             )
 
-    chart = MermaidDiagram(title=f"Timcord Survey {_CATEGORIES[category]}", nodes=nodes, links=links)
+    chart: MermaidDiagram = MermaidDiagram(title=f"Timcord Survey {_CATEGORIES[category]} Flowchart", nodes=nodes, links=links)
 
+    return chart
+
+def main() -> None:
     with open("README.md", "rt+") as f:
-        full_file = f.read()
-        full_file = re.sub(
-            f"## {_CATEGORIES[category]}\\n\\n```mermaid\\n(.*?)\\n```",
-            f"## {_CATEGORIES[category]}\n\n```mermaid\n" + str(chart) + "\n```",
-            full_file,
-            flags=re.DOTALL,
-        )
-        f.seek(0)
-        f.write(full_file)
-        f.truncate()
-
-
-def main():
-    for category in _CATEGORIES.keys():
-        _make_flowchart(category)
+        for category in _CATEGORIES.keys():
+            chart: MermaidDiagram = _make_flowchart(category)
+            full_file: str = f.read()
+            full_file = re.sub(
+                f"## {_CATEGORIES[category]} Flowchart\\n\\n```mermaid\\n(.*?)\\n```",
+                f"## {_CATEGORIES[category]} Flowchart\n\n```mermaid\n" + str(chart) + "\n```",
+                full_file,
+                flags=re.DOTALL,
+            )
+            f.seek(0)
+            f.write(full_file)
+            f.truncate()
 
 
 if __name__ == "__main__":

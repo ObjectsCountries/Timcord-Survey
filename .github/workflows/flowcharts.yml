@@ -6,6 +6,7 @@ on:
     paths:
       - "src/assets/questions.json"
       - "flowcharts.py"
+      - "README.md"
 
 jobs:
   flowcharts:

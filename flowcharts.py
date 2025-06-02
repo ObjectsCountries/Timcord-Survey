@@ -1,27 +1,44 @@
 #!/usr/bin/env python3
 
-from json import load
-from typing import TypeAlias
+import json
+import pathlib
 import re
+import typing
 
 from python_mermaid.diagram import MermaidDiagram, Node, Link
 
-_CATEGORIES: dict[str, str] = {
-    "DEBUG_": "Debug",
-    "": ""
-}
+_CATEGORIES: dict[str, str] = {"DEBUG_": "Debug ", "": ""}
 
-_JSON: TypeAlias = dict[str, "_JSON"] | list["_JSON"] | str | int | float | bool | None
+_FLOWCHART_FILE: pathlib.Path = pathlib.Path("src/README.md")
+
+_JSON: typing.TypeAlias = (
+    dict[str, "_JSON"] | list["_JSON"] | str | int | float | bool | None
+)
+
+_QUESTIONS_FILE: pathlib.Path = pathlib.Path("src/questions.json")
+
 
 def _make_flowchart(category: str) -> MermaidDiagram:
+    """
+    Creates a flowchart from the given category.
+    """
     questions: _JSON = {}
     substitutions: _JSON = {}
-    with open("src/assets/questions.json") as f:
-        survey_questions: _JSON = load(f)
+    with open(_QUESTIONS_FILE) as f:
+        survey_questions: _JSON = json.load(f)
         questions = survey_questions[category + "questions"]
         substitutions = survey_questions[category + "substitutions"]
 
-    nodes: list[Node] = [Node(question["id"]) for question in questions]
+    nodes: list[Node] = [
+        Node(
+            question["id"],
+            question["title"],
+            shape="stadium-shape"
+            if "begin" in question["id"].lower() or question["question_type"] == "end"
+            else "rhombus",
+        )
+        for question in questions
+    ]
     links: list[Link] = []
 
     for question in questions:
@@ -31,9 +48,10 @@ def _make_flowchart(category: str) -> MermaidDiagram:
                     Link(
                         next(n for n in nodes if n.id == question["id"].lower()),
                         next(n for n in nodes if n.id == answer["destination"].lower()),
-                        message=answer["id"],
+                        message=answer["text"],
                     )
                 )
+        # If the question is not an end question
         elif question["destination"] is not None:
             links.append(
                 Link(
@@ -43,24 +61,33 @@ def _make_flowchart(category: str) -> MermaidDiagram:
                 )
             )
 
-    chart: MermaidDiagram = MermaidDiagram(title=f"Timcord Survey {_CATEGORIES[category]} Flowchart", nodes=nodes, links=links)
-
+    chart: MermaidDiagram = MermaidDiagram(
+        title=f"Timcord Survey {_CATEGORIES[category]}Flowchart",
+        nodes=nodes,
+        links=links,
+    )
     return chart
 
+
 def main() -> None:
-    with open("README.md", "rt+") as f:
+    """
+    Modifies README.md.
+    """
+    with open(_FLOWCHART_FILE, "rt+") as f:
+        full_file: str = f.read()
         for category in _CATEGORIES.keys():
             chart: MermaidDiagram = _make_flowchart(category)
-            full_file: str = f.read()
             full_file = re.sub(
-                f"## {_CATEGORIES[category]} Flowchart\\n\\n```mermaid\\n(.*?)\\n```",
-                f"## {_CATEGORIES[category]} Flowchart\n\n```mermaid\n" + str(chart) + "\n```",
+                f"## {_CATEGORIES[category]}Flowchart\\n\\n```mermaid\\n(.*?)\\n```",
+                f"## {_CATEGORIES[category]}Flowchart\n\n```mermaid\n"
+                + str(chart)
+                + "\n```",
                 full_file,
                 flags=re.DOTALL,
             )
-            f.seek(0)
-            f.write(full_file)
-            f.truncate()
+        f.seek(0)
+        f.write(full_file)
+        f.truncate()
 
 
 if __name__ == "__main__":

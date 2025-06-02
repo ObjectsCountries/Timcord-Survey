@@ -33,7 +33,7 @@
   "substitutions": {},
   "questions": [
     {
-      "id": "theming",
+      "id": "begin_theming",
       "title": "Welcome! Please choose a theme.",
       "substitutions": [],
       "question_type": "multiple_choice",
@@ -72,7 +72,7 @@
   ],
   "DEBUG_questions": [
     {
-      "id": "DEBUG_intro",
+      "id": "DEBUG_begin_intro",
       "title": "Welcome! Please choose a color.",
       "substitutions": [],
       "question_type": "multiple_choice",

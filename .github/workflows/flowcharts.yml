@@ -5,16 +5,17 @@ on:
     branches: [ "main" ]
     paths:
       - "src/assets/questions.json"
+      - "flowcharts.py"
 
 jobs:
   flowcharts:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python 3.13
+    - name: Set up Python 3.13.3
       uses: actions/setup-python@v3
       with:
-        python-version: "3.13"
+        python-version: "3.13.3"
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip

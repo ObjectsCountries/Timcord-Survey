@@ -6,7 +6,7 @@ import Question from '../components/question.ts'
 import type { MultipleChoiceAnswer } from '../components/question.ts'
 
 enum QuestionList {
-  debug_questions,
+  DEBUG_questions,
   questions,
 }
 
@@ -21,26 +21,31 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const answers = ref<Question[]>([])
 
   function getQuestionList(qList: QuestionList): Question[] {
+    let substitutions = {}
     let questions = []
     switch (qList) {
-      case QuestionList.debug_questions:
-        questions = surveyQuestions.debug_questions
+      case QuestionList.DEBUG_questions:
+        questions = surveyQuestions.DEBUG_questions
+        substitutions = surveyQuestions.DEBUG_substitutions
         break
       case QuestionList.questions:
         questions = surveyQuestions.questions
+        substitutions = surveyQuestions.substitutions
         break
       default:
         questions = surveyQuestions.questions
+        substitutions = surveyQuestions.substitutions
         break
     }
-    questions = questions.map((question) => new Question(question))
+    questions = questions.map((question) => new Question(question, substitutions))
     return questions
   }
 
+  /** Initializes the store values to prepare for unit tests. */
   function setUpUnitTests() {
     currentDestination.value = null
     questionsAnswered.value = 0
-    debug.value = QuestionList.debug_questions
+    debug.value = QuestionList.DEBUG_questions
     questionList.value = getQuestionList(debug.value)
     currentQuestion.value = _.cloneDeep(questionList.value[0])
     currentResponse.value = null
@@ -48,6 +53,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     answers.value = []
   }
 
+  /** Goes back one question, preserving any current answer. */
   function previousQuestion() {
     currentQuestion.value.submitAnswer(currentResponse.value)
     answers.value[questionsAnswered.value] = currentQuestion.value

@@ -1,5 +1,3 @@
-import surveyQuestions from '../assets/questions.json'
-
 interface Substitutions {
   [to_replace: string]: string[]
 }
@@ -20,31 +18,36 @@ export enum QuestionType {
 export default class Question {
   id: string
   title: string
-  substitutions: Substitutions = surveyQuestions.substitutions as Substitutions
+  substitutions: Substitutions
   question_type: QuestionType = QuestionType.other
   answers: MultipleChoiceAnswer[] = []
   character_limit?: number = -1
   response: MultipleChoiceAnswer | string | null = null
   destination: string | null = null
 
-  constructor(question: {
-    id: string
-    title: string
-    substitutions: string[]
-    question_type: string
-    answers?: {
+  constructor(
+    question: {
       id: string
-      text: string
-      destination: string
-    }[]
-    character_limit?: number
-    response: string | null
-    destination: string | null
-  }) {
+      title: string
+      substitutions: string[]
+      question_type: string
+      answers?: {
+        id: string
+        text: string
+        destination: string
+      }[]
+      character_limit?: number
+      response: string | null
+      destination: string | null
+    },
+    substitutions: {
+      [to_replace: string]: string[]
+    },
+  ) {
     this.id = question.id
     this.title = question.title
     this.substitutions = Object.fromEntries(
-      Object.entries(this.substitutions).filter((x) => question.substitutions.includes(x[0])),
+      Object.entries(substitutions).filter((x) => question.substitutions.includes(x[0])),
     ) as Substitutions
     this.question_type = QuestionType[question.question_type as keyof typeof QuestionType]
     switch (this.question_type) {

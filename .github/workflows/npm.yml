@@ -1,4 +1,4 @@
-name: Unit Tests
+name: NPM unit tests and build status
 
 on:
   push:

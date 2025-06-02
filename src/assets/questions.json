@@ -1,5 +1,5 @@
 {
-  "substitutions": {
+  "DEBUG_substitutions": {
     "DEBUG_substitution_1": [
       "apple",
       "banana",
@@ -30,6 +30,7 @@
       "donuts"
     ]
   },
+  "substitutions": {},
   "questions": [
     {
       "id": "theming",
@@ -69,7 +70,7 @@
       "destination": null
     }
   ],
-  "debug_questions": [
+  "DEBUG_questions": [
     {
       "id": "DEBUG_intro",
       "title": "Welcome! Please choose a color.",

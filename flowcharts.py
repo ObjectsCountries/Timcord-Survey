@@ -18,6 +18,28 @@ _JSON: typing.TypeAlias = (
 _QUESTIONS_FILE: pathlib.Path = pathlib.Path("src/assets/questions.json")
 
 
+def _snake_case(s: str):
+    """
+    Overrides the Node class's snake_case method to be more accurate.
+    """
+    s = s.replace("-", " ")
+    s = s.replace("_", " ")
+
+    s = re.sub(" ([A-Z]+)", r"_\1", s)  # All caps word
+
+    s = re.sub(" ([A-Z][a-z]+)", r"_\1", s)  # Capitalized word
+
+    s = re.sub("([a-z])([A-Z])", r"\1_\2", s)  # Camel Case word
+
+    s = re.sub("([A-Z])([A-Z])([a-z]+)", r"\1_\2\3", s)  # words such as THESEWords
+
+    s = re.sub("(  )", r"__", s)  # Multiple spaces
+
+    s = "_".join(s.split()).lower()
+
+    return s
+
+
 def _make_flowchart(category: str) -> MermaidDiagram:
     """
     Creates a flowchart from the given category.
@@ -30,7 +52,7 @@ def _make_flowchart(category: str) -> MermaidDiagram:
         substitutions = survey_questions[category + "substitutions"]
 
     nodes: list[Node] = [
-        Node(question["id"], question["title"], shape="stadium-shape")
+        Node(_snake_case(question["id"]), question["title"], shape="stadium-shape")
         for question in questions
     ]
     links: list[Link] = []

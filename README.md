@@ -16,7 +16,7 @@ title: Timcord Survey Flowchart
 ---
 graph 
 begin_theming(["Welcome! Please choose a theme."])
-writing{"Write a personal message to Vice.")
+writing{"Write a personal message to Vice."}
 finish(["Finished!"])
 begin_theming --->|Light Mode| writing
 begin_theming --->|Dark Mode| writing
@@ -31,10 +31,10 @@ title: Timcord Survey Debug Flowchart
 ---
 graph 
 debug_begin_intro(["Welcome! Please choose a color."])
-debug_substitution{"You got any DEBUG_substitution_1 DEBUG_substitution_2?")
-debug_branch{"Choose your path.")
-debug_path_left{"Left path chosen. Write a message.")
-debug_path_right{"Right path chosen. Write a message.")
+debug_substitution{"You got any DEBUG_substitution_1 DEBUG_substitution_2?"}
+debug_branch{"Choose your path."}
+debug_path_left{"Left path chosen. Write a message."}
+debug_path_right{"Right path chosen. Write a message."}
 debug_finish(["Reached end of debug."])
 debug_begin_intro --->|Red| debug_substitution
 debug_begin_intro --->|Orange| debug_substitution

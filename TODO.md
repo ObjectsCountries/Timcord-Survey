@@ -10,7 +10,7 @@ Survey for Timcord users.
 
 ### Experience
 
-- [ ] Create Look and Feel  
+- [ ] Decide on Look and Feel  
 - [x] Branching Paths  
 - [ ] Pizza Tower-Style Lap 2  
 - [ ] Music

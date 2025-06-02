@@ -30,13 +30,7 @@ def _make_flowchart(category: str) -> MermaidDiagram:
         substitutions = survey_questions[category + "substitutions"]
 
     nodes: list[Node] = [
-        Node(
-            question["id"],
-            question["title"],
-            shape="stadium-shape"
-            if "begin" in question["id"].lower() or question["question_type"] == "end"
-            else "rhombus",
-        )
+        Node(question["id"], question["title"], shape="stadium-shape")
         for question in questions
     ]
     links: list[Link] = []
@@ -83,11 +77,7 @@ def main() -> None:
                 full_file,
                 flags=re.DOTALL,
             )
-            full_file = re.sub(
-                "\\{(.*?)\\)",
-                "{\\1}",
-                full_file
-            )
+            full_file = re.sub("\\{(.*?)\\)", "{\\1}", full_file)
         f.seek(0)
         f.write(full_file)
         f.truncate()

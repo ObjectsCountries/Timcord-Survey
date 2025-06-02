@@ -9,13 +9,13 @@ from python_mermaid.diagram import MermaidDiagram, Node, Link
 
 _CATEGORIES: dict[str, str] = {"DEBUG_": "Debug ", "": ""}
 
-_FLOWCHART_FILE: pathlib.Path = pathlib.Path("src/README.md")
+_FLOWCHART_FILE: pathlib.Path = pathlib.Path("README.md")
 
 _JSON: typing.TypeAlias = (
     dict[str, "_JSON"] | list["_JSON"] | str | int | float | bool | None
 )
 
-_QUESTIONS_FILE: pathlib.Path = pathlib.Path("src/questions.json")
+_QUESTIONS_FILE: pathlib.Path = pathlib.Path("src/assets/questions.json")
 
 
 def _make_flowchart(category: str) -> MermaidDiagram:

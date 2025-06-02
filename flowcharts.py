@@ -78,12 +78,15 @@ def main() -> None:
         for category in _CATEGORIES.keys():
             chart: MermaidDiagram = _make_flowchart(category)
             full_file = re.sub(
-                f"## {_CATEGORIES[category]}Flowchart\\n\\n```mermaid\\n(.*?)\\n```",
-                f"## {_CATEGORIES[category]}Flowchart\n\n```mermaid\n"
-                + str(chart)
-                + "\n```",
+                f"(## {_CATEGORIES[category]}Flowchart\\n\\n```mermaid\\n).*?(\\n```)",
+                f"\\1{str(chart)}\\2",
                 full_file,
                 flags=re.DOTALL,
+            )
+            full_file = re.sub(
+                "\\{(.*?)\\)",
+                "{\\1}",
+                full_file
             )
         f.seek(0)
         f.write(full_file)

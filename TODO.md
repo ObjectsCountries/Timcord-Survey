@@ -12,4 +12,7 @@ Survey for Timcord users.
 
 - [ ] Create Look and Feel  
 - [x] Branching Paths  
-- [ ] Pizza Tower Lap 2  
+- [ ] Pizza Tower-Style Lap 2  
+- [ ] Music
+  - [ ] Loop that one instrumental part of Albuquerque by Weird Al for the donut loop  
+  - [ ] Original composition for Lap 2  

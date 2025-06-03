@@ -58,7 +58,7 @@ def _find_original(question: _JSON) -> _JSON:
         with open(_QUESTIONS_FILE) as f:
             survey_questions: _JSON = json.load(f)
             copied = next(
-                q for q in survey_questions[copy_category] if q["id"] == copy_question
+                q for q in survey_questions["question_categories"][copy_category] if q["id"] == copy_question
             )
         for field, value in copied.items():
             new_question[field] = value

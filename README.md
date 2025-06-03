@@ -14,7 +14,7 @@ This is a survey meant for the members of Timcord, inspired by the analysis work
 ---
 title: Timcord Survey Flowchart
 ---
-graph 
+graph TD
 begin_theming(["Welcome! Please choose a theme."])
 writing(["Write a personal message to Vice."])
 finish(["Finished!"])
@@ -29,7 +29,7 @@ writing --->|written_response| finish
 ---
 title: Timcord Survey Lap 2 Flowchart
 ---
-graph 
+graph TD
 ```
 
 ## Debug Flowchart
@@ -38,7 +38,7 @@ graph
 ---
 title: Timcord Survey Debug Flowchart
 ---
-graph 
+graph TD
 debug_begin_intro(["Welcome! Please choose a color."])
 debug_substitution(["You got any DEBUG_substitution_0 DEBUG_substitution_1?"])
 debug_branch(["Choose your path."])
@@ -65,7 +65,7 @@ debug_path_right --->|written_response| debug_finish
 ---
 title: Timcord Survey Debug Lap 2 Flowchart
 ---
-graph 
+graph TD
 debug_lap2_begin_intro(["Welcome to Lap 2! You're on a time limit this time, and the questions will be different."])
 debug_lap2_writing_copy(["Write a haiku about DEBUG_LAP2_writing_copy_0."])
 debug_lap2_finish(["Done! You can now submit."])

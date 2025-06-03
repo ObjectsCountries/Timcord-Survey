@@ -9,9 +9,9 @@ from python_mermaid.diagram import MermaidDiagram, Node, Link
 
 _CATEGORIES: dict[str, str] = {
     "": "",
-    "LAP_2_": "Lap 2 ",
+    "LAP2_": "Lap 2 ",
     "DEBUG_": "Debug ",
-    "DEBUG_LAP_2_": "Debug Lap 2 ",
+    "DEBUG_LAP2_": "Debug Lap 2 ",
 }
 
 _FLOWCHART_FILE: pathlib.Path = pathlib.Path("README.md")

@@ -63,6 +63,7 @@ def _find_original(question: _JSON) -> _JSON:
             )
         for field, value in question["changes"].items():
             copied[field] = value
+        copied["id"] = question["id"]
         return copied
 
 
@@ -70,11 +71,11 @@ def _make_flowchart(category: str) -> MermaidDiagram:
     """
     Creates a flowchart from the given category.
     """
-    questions: _JSON = {}
+    questions: _JSON = []
     substitutions: _JSON = {}
     with open(_QUESTIONS_FILE) as f:
         survey_questions: _JSON = json.load(f)
-        questions = survey_questions["question_categories"][category + "questions"]
+        questions = [_find_original(q) for q in survey_questions["question_categories"][category + "questions"]]
         substitutions = survey_questions["substitution_categories"][
             category + "substitutions"
         ]
@@ -82,7 +83,7 @@ def _make_flowchart(category: str) -> MermaidDiagram:
     nodes: list[Node] = [
         Node(
             _snake_case(question["id"]),
-            _find_original(question)["title"],
+            question["title"],
             shape="stadium-shape",
         )
         for question in questions

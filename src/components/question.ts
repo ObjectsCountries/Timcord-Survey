@@ -1,7 +1,5 @@
 import surveyQuestions from '../assets/questions.json'
 
-export type Substitutions = Record<string, string[]>
-
 export type MultipleChoiceAnswer = {
   id: string
   text: string
@@ -27,7 +25,7 @@ export enum QuestionList {
 export type PrimitiveQuestion = {
   id: string
   title: string
-  substitutions: string[]
+  substitutions: number
   question_type: string
   answers?: MultipleChoiceAnswer[]
   character_limit?: number
@@ -43,24 +41,43 @@ export type Lap2Question = {
   changes: QuestionChanges
 }
 
-export type SurveyPart<Type extends Record<string, string>, Element, Replace extends string> = {
-  [Property in Type[keyof Type] as `${string & Property}${Replace}`]: Element
+type SubstitutionsWithReferences = {
+  [category: string]: { [subQuestion: string]: (string | string[])[] }
 }
 
+type Substitution = {
+  [subQuestion: string]: string[][]
+}
+
+type AllSubs = { [category: string]: Substitution }
+
 type Survey = {
-  substitution_categories: SurveyPart<typeof QuestionList, Substitutions, 'substitutions'>
-  question_categories: SurveyPart<
-    typeof QuestionList,
-    (PrimitiveQuestion | Lap2Question)[],
-    'questions'
-  >
+  substitution_categories: AllSubs
+  question_categories: { [category: string]: (PrimitiveQuestion | Lap2Question)[] }
+}
+
+function convertSubstitutionReferences(subs: SubstitutionsWithReferences): AllSubs {
+  const result: SubstitutionsWithReferences = subs
+  for (const [category, question] of Object.entries(subs)) {
+    for (const [subQuestion, replacement] of Object.entries(question)) {
+      for (const substitution of replacement) {
+        if (typeof substitution === 'string') {
+          const [copy_category, copy_question, copy_index] = substitution.split(' ')
+          result[category][subQuestion][replacement.indexOf(substitution)] =
+            result[copy_category][copy_question][Number(copy_index)]
+        }
+      }
+    }
+  }
+  return result as AllSubs
 }
 
 export default class Question {
   id: string
   title: string
-  substitutions: Substitutions
+  substitutions: number
   question_type: QuestionType = QuestionType.other
+  question_list: QuestionList
   answers?: MultipleChoiceAnswer[]
   character_limit?: number
   response: MultipleChoiceAnswer | string | null = null
@@ -69,26 +86,27 @@ export default class Question {
   static defaults: PrimitiveQuestion = {
     id: 'ERROR',
     title: 'Something has gone wrong. Please report this to Vice.',
-    substitutions: [],
+    substitutions: 0,
     question_type: 'end',
     response: null,
     destination: null,
   }
-  static survey: Survey = surveyQuestions
 
-  static errorQuestion: Question = new Question(Question.defaults, {})
+  static survey: Survey = {
+    substitution_categories: convertSubstitutionReferences(surveyQuestions.substitution_categories),
+    question_categories: surveyQuestions.question_categories,
+  }
 
-  constructor(question: Partial<PrimitiveQuestion> | Lap2Question, substitutions: Substitutions) {
+  static errorQuestion: Question = new Question(Question.defaults, QuestionList.questions)
+
+  constructor(question: Partial<PrimitiveQuestion> | Lap2Question, qList: QuestionList) {
+    this.question_list = qList
     this.id = question.id ?? Question.defaults.id
     if ((question as Lap2Question).changes === undefined) {
       question = question as PrimitiveQuestion
       this.title = question.title ?? Question.defaults.title
-      this.substitutions = Object.fromEntries(
-        Object.entries(substitutions ?? {}).filter((x) =>
-          (question as PrimitiveQuestion).substitutions.includes(x[0]),
-        ),
-      )
-      this.destination = question.destination ?? null
+      this.substitutions = question.substitutions ?? Question.defaults.substitutions
+      this.destination = question.destination ?? Question.defaults.destination
       this.question_type =
         QuestionType[(question.question_type ?? QuestionType.other) as keyof typeof QuestionType]
       switch (this.question_type) {
@@ -109,30 +127,21 @@ export default class Question {
       }
     } else {
       this.title = Question.defaults.title
-      this.substitutions = Object.fromEntries(
-        Object.entries(substitutions ?? {}).filter((x) =>
-          (question as Lap2Question).changes?.substitutions?.includes(x[0]),
-        ),
-      )
+      this.substitutions = Question.defaults.substitutions
       const [copy_category, copy_question] = ((question as Lap2Question).copy_of ?? '_ _').split(
         ' ',
       )
       if (copy_category !== '_' && copy_question !== '_') {
         const copy: PrimitiveQuestion | Lap2Question | null =
-          Question.survey.question_categories[
-            copy_category as keyof SurveyPart<
-              typeof QuestionList,
-              (PrimitiveQuestion | Lap2Question)[],
-              'questions'
-            >
-          ].find((x) => x.id === copy_question) ?? null
+          Question.survey.question_categories[copy_category].find((x) => x.id === copy_question) ??
+          null
         return new Question(
           {
             ...copy,
             id: (question as Lap2Question).id,
             ...(question as Lap2Question).changes,
           },
-          substitutions,
+          qList,
         )
       } else {
         throw TypeError('Lap2Question without copy_of found!')
@@ -151,8 +160,14 @@ export default class Question {
   }
 
   substitute() {
-    for (const [sub, repls] of Object.entries(this.substitutions)) {
-      const replacement = repls[Math.floor(Math.random() * repls.length)]
+    let sub = 'S'
+    let replacement = ''
+    let replacement_array = []
+    for (let i = 0; i < this.substitutions; ++i) {
+      sub = `S${i}`
+      replacement_array =
+        Question.survey.substitution_categories[this.question_list + 'substitutions'][this.id][i]
+      replacement = replacement_array[Math.floor(Math.random() * replacement_array.length)]
       this.title = this.title.replace(sub, replacement)
       this.answers = (this.answers ?? []).map((answer) => {
         answer.text = answer.text.replace(sub, replacement)

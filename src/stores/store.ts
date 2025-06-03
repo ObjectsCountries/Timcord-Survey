@@ -3,13 +3,7 @@ import { defineStore } from 'pinia'
 import _ from 'lodash'
 import { QuestionType, QuestionList } from '../components/question.ts'
 import Question from '../components/question.ts'
-import type {
-  Substitutions,
-  MultipleChoiceAnswer,
-  PrimitiveQuestion,
-  Lap2Question,
-  SurveyPart,
-} from '../components/question.ts'
+import type { MultipleChoiceAnswer } from '../components/question.ts'
 
 export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const currentDestination = ref<string | null>(null)
@@ -26,21 +20,9 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
   })
 
   function getQuestionList(qList: QuestionList): Question[] {
-    const substitutions: Substitutions =
-      Question.survey.substitution_categories[
-        (qList + 'substitutions') as keyof SurveyPart<
-          typeof QuestionList,
-          Substitutions,
-          'substitutions'
-        >
-      ]
-    const questions: Question[] = Question.survey.question_categories[
-      (qList + 'questions') as keyof SurveyPart<
-        typeof QuestionList,
-        (PrimitiveQuestion | Lap2Question)[],
-        'questions'
-      >
-    ].map((question) => new Question(question, substitutions))
+    const questions: Question[] = Question.survey.question_categories[qList + 'questions'].map(
+      (question) => new Question(question, qList),
+    )
     return questions
   }
 

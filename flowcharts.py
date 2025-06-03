@@ -76,9 +76,6 @@ def _make_flowchart(category: str) -> MermaidDiagram:
     with open(_QUESTIONS_FILE) as f:
         survey_questions: _JSON = json.load(f)
         questions = [_find_original(q) for q in survey_questions["question_categories"][category + "questions"]]
-        substitutions = survey_questions["substitution_categories"][
-            category + "substitutions"
-        ]
 
     nodes: list[Node] = [
         Node(

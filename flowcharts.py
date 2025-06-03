@@ -7,7 +7,12 @@ import typing
 
 from python_mermaid.diagram import MermaidDiagram, Node, Link
 
-_CATEGORIES: dict[str, str] = {"": "", "LAP_2_", "Lap 2 ", "DEBUG_": "Debug ", "DEBUG_LAP_2_", "Debug Lap 2 "}
+_CATEGORIES: dict[str, str] = {
+    "": "",
+    "LAP_2_": "Lap 2 ",
+    "DEBUG_": "Debug ",
+    "DEBUG_LAP_2_": "Debug Lap 2 ",
+}
 
 _FLOWCHART_FILE: pathlib.Path = pathlib.Path("README.md")
 
@@ -39,6 +44,7 @@ def _snake_case(s: str):
 
     return s
 
+
 def _find_original(question: _JSON) -> _JSON:
     """
     Given a question that copies another, find the original.
@@ -51,12 +57,15 @@ def _find_original(question: _JSON) -> _JSON:
         new_question = None
         with open(_QUESTIONS_FILE) as f:
             survey_questions: _JSON = json.load(f)
-            copied = next(q for q in survey_questions[copy_category] if q["id"] == copy_question)
+            copied = next(
+                q for q in survey_questions[copy_category] if q["id"] == copy_question
+            )
         for field, value in copied.items():
             new_question[field] = value
         for field, value in question["changes"].items():
             new_question[field] = value
         return new_question
+
 
 def _make_flowchart(category: str) -> MermaidDiagram:
     """
@@ -67,10 +76,16 @@ def _make_flowchart(category: str) -> MermaidDiagram:
     with open(_QUESTIONS_FILE) as f:
         survey_questions: _JSON = json.load(f)
         questions = survey_questions["question_categories"][category + "questions"]
-        substitutions = survey_questions["substitution_categories"][category + "substitutions"]
+        substitutions = survey_questions["substitution_categories"][
+            category + "substitutions"
+        ]
 
     nodes: list[Node] = [
-        Node(_snake_case(question["id"]), _find_original(question)["title"], shape="stadium-shape")
+        Node(
+            _snake_case(question["id"]),
+            _find_original(question)["title"],
+            shape="stadium-shape",
+        )
         for question in questions
     ]
     links: list[Link] = []

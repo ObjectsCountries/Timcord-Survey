@@ -54,17 +54,16 @@ def _find_original(question: _JSON) -> _JSON:
     else:
         copy_category, copy_question = tuple(question["copy_of"].split(" "))
         copied = None
-        new_question = None
         with open(_QUESTIONS_FILE) as f:
             survey_questions: _JSON = json.load(f)
             copied = next(
-                q for q in survey_questions["question_categories"][copy_category] if q["id"] == copy_question
+                q
+                for q in survey_questions["question_categories"][copy_category]
+                if q["id"] == copy_question
             )
-        for field, value in copied.items():
-            new_question[field] = value
         for field, value in question["changes"].items():
-            new_question[field] = value
-        return new_question
+            copied[field] = value
+        return copied
 
 
 def _make_flowchart(category: str) -> MermaidDiagram:

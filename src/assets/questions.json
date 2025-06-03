@@ -1,181 +1,228 @@
 {
-  "DEBUG_substitutions": {
-    "DEBUG_substitution_1": [
-      "apple",
-      "banana",
-      "cherry",
-      "orange",
-      "pomegranate",
-      "boston",
-      "mango",
-      "mango mango those who know",
-      "still",
-      "bavarian creme filled",
-      "cinnamon",
-      "peculiar",
-      "sugary",
-      "jelly",
-      "stupid-flavored",
-      "potato",
-      "CaseOh-sized"
-    ],
-    "DEBUG_substitution_2": [
-      "fritters",
-      "donuts",
-      "rolls",
-      "water",
-      "knishes",
-      "cremes",
-      "deez nuts",
-      "donuts"
-    ]
+  "substitution_categories": {
+    "substitutions": {},
+    "LAP2_substitutions": {},
+    "DEBUG_substitutions": {
+      "DEBUG_substitution_0": [
+        "apple",
+        "banana",
+        "cherry",
+        "orange",
+        "pomegranate",
+        "boston",
+        "mango",
+        "mango mango those who know",
+        "still",
+        "bavarian creme filled",
+        "cinnamon",
+        "peculiar",
+        "sugary",
+        "jelly",
+        "stupid-flavored",
+        "potato",
+        "CaseOh-sized"
+      ],
+      "DEBUG_substitution_1": [
+        "fritters",
+        "donuts",
+        "rolls",
+        "water",
+        "knishes",
+        "cremes",
+        "deez nuts",
+        "donuts"
+      ]
+    },
+    "DEBUG_LAP2_substitutions": {
+      "DEBUG_LAP2_writing_copy_0": [
+        "Timcord",
+        "Skibidi Toilet",
+        "how cool Vice is",
+        "how stupid Vice is",
+        "nothing (because nothing ever happens)",
+        "Tim Pool",
+        "Timthetatman",
+        "Tim Hawktuahonit or however you spell his last name",
+        "microbes"
+      ]
+    }
   },
-  "substitutions": {},
-  "questions": [
-    {
-      "id": "BEGIN_theming",
-      "title": "Welcome! Please choose a theme.",
-      "substitutions": [],
-      "question_type": "multiple_choice",
-      "answers": [
-        {
-          "id": "theming_light",
-          "text": "Light Mode",
-          "destination": "writing"
-        },
-        {
-          "id": "theming_dark",
-          "text": "Dark Mode",
-          "destination": "writing"
+  "question_categories": {
+    "questions": [
+      {
+        "id": "BEGIN_theming",
+        "title": "Welcome! Please choose a theme.",
+        "substitutions": [],
+        "question_type": "multiple_choice",
+        "answers": [
+          {
+            "id": "theming_light",
+            "text": "Light Mode",
+            "destination": "writing"
+          },
+          {
+            "id": "theming_dark",
+            "text": "Dark Mode",
+            "destination": "writing"
+          }
+        ],
+        "response": null,
+        "destination": null
+      },
+      {
+        "id": "writing",
+        "title": "Write a personal message to Vice.",
+        "substitutions": [],
+        "question_type": "written_response",
+        "character_limit": 200,
+        "response": null,
+        "destination": "finish"
+      },
+      {
+        "id": "finish",
+        "title": "Finished!",
+        "substitutions": [],
+        "question_type": "end",
+        "response": null,
+        "destination": null
+      }
+    ],
+    "LAP2_questions": [],
+    "DEBUG_questions": [
+      {
+        "id": "DEBUG_BEGIN_intro",
+        "title": "Welcome! Please choose a color.",
+        "substitutions": [],
+        "question_type": "multiple_choice",
+        "answers": [
+          {
+            "id": "DEBUG_intro_red",
+            "text": "Red",
+            "destination": "DEBUG_substitution"
+          },
+          {
+            "id": "DEBUG_intro_orange",
+            "text": "Orange",
+            "destination": "DEBUG_substitution"
+          },
+          {
+            "id": "DEBUG_intro_yellow",
+            "text": "Yellow",
+            "destination": "DEBUG_substitution"
+          },
+          {
+            "id": "DEBUG_intro_green",
+            "text": "Green",
+            "destination": "DEBUG_substitution"
+          },
+          {
+            "id": "DEBUG_intro_blue",
+            "text": "Blue",
+            "destination": "DEBUG_substitution"
+          },
+          {
+            "id": "DEBUG_intro_purple",
+            "text": "Purple",
+            "destination": "DEBUG_substitution"
+          }
+        ],
+        "response": null,
+        "destination": null
+      },
+      {
+        "id": "DEBUG_substitution",
+        "title": "You got any DEBUG_substitution_0 DEBUG_substitution_1?",
+        "substitutions": ["DEBUG_substitution_0", "DEBUG_substitution_1"],
+        "question_type": "multiple_choice",
+        "answers": [
+          {
+            "id": "DEBUG_substitution_yes",
+            "text": "YEAAAH we got some DEBUG_substitution_0 DEBUG_substitution_1!",
+            "destination": "DEBUG_branch"
+          },
+          {
+            "id": "DEBUG_substitution_no",
+            "text": "NAWWWW we're outta DEBUG_substitution_0 DEBUG_substitution_1!",
+            "destination": "DEBUG_substitution"
+          }
+        ],
+        "response": null,
+        "destination": null
+      },
+      {
+        "id": "DEBUG_branch",
+        "title": "Choose your path.",
+        "substitutions": [],
+        "question_type": "multiple_choice",
+        "answers": [
+          {
+            "id": "DEBUG_branch_left",
+            "text": "Left",
+            "destination": "DEBUG_path_left"
+          },
+          {
+            "id": "DEBUG_branch_right",
+            "text": "Right",
+            "destination": "DEBUG_path_right"
+          }
+        ],
+        "response": null,
+        "destination": null
+      },
+      {
+        "id": "DEBUG_path_left",
+        "title": "Left path chosen. Write a message.",
+        "substitutions": [],
+        "question_type": "written_response",
+        "character_limit": 100,
+        "response": null,
+        "destination": "DEBUG_finish"
+      },
+      {
+        "id": "DEBUG_path_right",
+        "title": "Right path chosen. Write a message.",
+        "substitutions": [],
+        "question_type": "written_response",
+        "character_limit": 100,
+        "response": null,
+        "destination": "DEBUG_finish"
+      },
+      {
+        "id": "DEBUG_finish",
+        "title": "Reached end of debug.",
+        "substitutions": [],
+        "question_type": "end",
+        "response": null,
+        "destination": null
+      }
+    ],
+    "DEBUG_LAP2_questions": [
+      {
+        "id": "DEBUG_LAP2_BEGIN_intro",
+        "title": "Welcome to Lap 2! You're on a time limit this time, and the questions will be different.",
+        "substitutions": [],
+        "question_type": "intro",
+        "response": null,
+        "destination": "DEBUG_LAP2_writing_copy"
+      },
+      {
+        "id": "DEBUG_LAP2_writing_copy",
+        "copy_of": "DEBUG_questions DEBUG_path_right",
+        "changes": {
+          "title": "Write a haiku about DEBUG_LAP2_writing_copy_0.",
+          "substitutions": ["DEBUG_LAP2_writing_copy_0"],
+          "character_limit": 150,
+          "destination": "DEBUG_LAP2_finish"
         }
-      ],
-      "response": null,
-      "destination": null
-    },
-    {
-      "id": "writing",
-      "title": "Write a personal message to Vice.",
-      "substitutions": [],
-      "question_type": "written_response",
-      "character_limit": 200,
-      "response": null,
-      "destination": "finish"
-    },
-    {
-      "id": "finish",
-      "title": "Finished!",
-      "substitutions": [],
-      "question_type": "end",
-      "response": null,
-      "destination": null
-    }
-  ],
-  "DEBUG_questions": [
-    {
-      "id": "DEBUG_BEGIN_intro",
-      "title": "Welcome! Please choose a color.",
-      "substitutions": [],
-      "question_type": "multiple_choice",
-      "answers": [
-        {
-          "id": "DEBUG_intro_red",
-          "text": "Red",
-          "destination": "DEBUG_substitution"
-        },
-        {
-          "id": "DEBUG_intro_orange",
-          "text": "Orange",
-          "destination": "DEBUG_substitution"
-        },
-        {
-          "id": "DEBUG_intro_yellow",
-          "text": "Yellow",
-          "destination": "DEBUG_substitution"
-        },
-        {
-          "id": "DEBUG_intro_green",
-          "text": "Green",
-          "destination": "DEBUG_substitution"
-        },
-        {
-          "id": "DEBUG_intro_blue",
-          "text": "Blue",
-          "destination": "DEBUG_substitution"
-        },
-        {
-          "id": "DEBUG_intro_purple",
-          "text": "Purple",
-          "destination": "DEBUG_substitution"
-        }
-      ],
-      "response": null,
-      "destination": null
-    },
-    {
-      "id": "DEBUG_substitution",
-      "title": "You got any DEBUG_substitution_1 DEBUG_substitution_2?",
-      "substitutions": ["DEBUG_substitution_1", "DEBUG_substitution_2"],
-      "question_type": "multiple_choice",
-      "answers": [
-        {
-          "id": "DEBUG_substitution_yes",
-          "text": "YEAAAH we got some DEBUG_substitution_1 DEBUG_substitution_2!",
-          "destination": "DEBUG_branch"
-        },
-        {
-          "id": "DEBUG_substitution_no",
-          "text": "NAWWWW we're outta DEBUG_substitution_1 DEBUG_substitution_2!",
-          "destination": "DEBUG_substitution"
-        }
-      ],
-      "response": null,
-      "destination": null
-    },
-    {
-      "id": "DEBUG_branch",
-      "title": "Choose your path.",
-      "substitutions": [],
-      "question_type": "multiple_choice",
-      "answers": [
-        {
-          "id": "DEBUG_branch_left",
-          "text": "Left",
-          "destination": "DEBUG_path_left"
-        },
-        {
-          "id": "DEBUG_branch_right",
-          "text": "Right",
-          "destination": "DEBUG_path_right"
-        }
-      ],
-      "response": null,
-      "destination": null
-    },
-    {
-      "id": "DEBUG_path_left",
-      "title": "Left path chosen. Write a message.",
-      "substitutions": [],
-      "question_type": "written_response",
-      "character_limit": 100,
-      "response": null,
-      "destination": "DEBUG_finish"
-    },
-    {
-      "id": "DEBUG_path_right",
-      "title": "Right path chosen. Write a message.",
-      "substitutions": [],
-      "question_type": "written_response",
-      "character_limit": 100,
-      "response": null,
-      "destination": "DEBUG_finish"
-    },
-    {
-      "id": "DEBUG_finish",
-      "title": "Reached end of debug.",
-      "substitutions": [],
-      "question_type": "end",
-      "response": null,
-      "destination": null
-    }
-  ]
+      },
+      {
+        "id": "DEBUG_LAP2_finish",
+        "title": "Done! You can now submit.",
+        "substitutions": [],
+        "question_type": "end",
+        "response": null,
+        "destination": null
+      }
+    ]
+  }
 }

@@ -1,14 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import _ from 'lodash'
-import surveyQuestions from '../assets/questions.json'
+import { QuestionList } from '../components/question.ts'
 import Question from '../components/question.ts'
-import type { MultipleChoiceAnswer } from '../components/question.ts'
-
-enum QuestionList {
-  DEBUG_questions,
-  questions,
-}
+import type {
+  Substitutions,
+  MultipleChoiceAnswer,
+  PrimitiveQuestion,
+  Lap2Question,
+  SurveyPart,
+} from '../components/question.ts'
 
 export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const currentDestination = ref<string | null>(null)
@@ -21,31 +22,31 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
   const answers = ref<Question[]>([])
 
   function getQuestionList(qList: QuestionList): Question[] {
-    let substitutions = {}
-    let questions = []
-    switch (qList) {
-      case QuestionList.DEBUG_questions:
-        questions = surveyQuestions.DEBUG_questions
-        substitutions = surveyQuestions.DEBUG_substitutions
-        break
-      case QuestionList.questions:
-        questions = surveyQuestions.questions
-        substitutions = surveyQuestions.substitutions
-        break
-      default:
-        questions = surveyQuestions.questions
-        substitutions = surveyQuestions.substitutions
-        break
-    }
-    questions = questions.map((question) => new Question(question, substitutions))
+    const substitutions: Substitutions =
+      Question.survey.substitution_categories[
+        (qList + 'substitutions') as keyof SurveyPart<
+          typeof QuestionList,
+          Substitutions,
+          'substitutions'
+        >
+      ]
+    const questions: Question[] = Question.survey.question_categories[
+      (qList + 'questions') as keyof SurveyPart<
+        typeof QuestionList,
+        (PrimitiveQuestion | Lap2Question)[],
+        'questions'
+      >
+    ].map((question) => new Question(question, substitutions))
     return questions
   }
 
-  /** Initializes the store values to prepare for unit tests. */
-  function setUpUnitTests() {
+  /** Initializes the store values to prepare for unit tests.
+   *  @param questionGroup The question group to start from.
+   */
+  function restart(questionGroup: QuestionList) {
     currentDestination.value = null
     questionsAnswered.value = 0
-    debug.value = QuestionList.DEBUG_questions
+    debug.value = questionGroup
     questionList.value = getQuestionList(debug.value)
     currentQuestion.value = _.cloneDeep(questionList.value[0])
     currentResponse.value = null
@@ -107,7 +108,7 @@ export const useQuestionInfoStore = defineStore('questionInfo', () => {
     currentResponse,
     buttonPressed,
     answers,
-    setUpUnitTests,
+    restart,
     previousQuestion,
     nextQuestion,
   }

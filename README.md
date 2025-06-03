@@ -23,6 +23,12 @@ begin_theming --->|Dark Mode| writing
 writing --->|written_response| finish
 ```
 
+## Lap 2 Flowchart
+
+```mermaid
+
+```
+
 ## Debug Flowchart
 
 ```mermaid
@@ -50,3 +56,8 @@ debug_path_left --->|written_response| debug_finish
 debug_path_right --->|written_response| debug_finish
 ```
 
+## Debug Lap 2 Flowchart
+
+```mermaid
+
+```

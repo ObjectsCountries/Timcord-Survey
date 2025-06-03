@@ -1,13 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useQuestionInfoStore } from '../store.ts'
+import { QuestionList } from '../../components/question.ts'
 import type { MultipleChoiceAnswer } from '../../components/question.ts'
 
 describe('Question Info Store Test', () => {
   setActivePinia(createPinia())
   const store = useQuestionInfoStore()
   beforeEach(() => {
-    store.setUpUnitTests()
+    store.restart(QuestionList.DEBUG_questions)
   })
 
   it('initializes with correct values', () => {
@@ -92,7 +93,7 @@ describe('Question Info Store Test', () => {
       'You got any '.length,
       store.currentQuestion.title.length - '?'.length,
     )
-    for (const answer of store.currentQuestion.answers) {
+    for (const answer of store.currentQuestion.answers ?? []) {
       expect(answer.text).toEqual(expect.stringContaining(substituted))
     }
   })

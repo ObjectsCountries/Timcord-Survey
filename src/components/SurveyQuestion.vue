@@ -12,7 +12,7 @@ import type { MultipleChoiceAnswer } from './question.ts'
       type="radio"
       :label="store.currentQuestion.title"
       :options="
-        store.currentQuestion.answers.map((o: MultipleChoiceAnswer) => {
+        (store.currentQuestion.answers ?? []).map((o: MultipleChoiceAnswer) => {
           return {
             label: o.text,
             value: o,
@@ -24,24 +24,52 @@ import type { MultipleChoiceAnswer } from './question.ts'
   </div>
 
   <div v-else-if="store.currentQuestion.question_type === QuestionType.written_response">
-    <h1>amogus</h1>
+    <FormKit
+      v-model="store.currentResponse as string"
+      type="textarea"
+      :label="store.currentQuestion.title"
+      :help="`${store.currentResponse ? (store.currentResponse as string).length : 0} / ${store.currentQuestion.character_limit}`"
+      :validation="`length:1,store.currentQuestion.character_limit`"
+      validation-visibility="live"
+      :validation-messages="{
+        length: 'Instructions cannot be more than 120 characters.',
+      }"
+    />
+  </div>
+
+  <div v-else-if="store.currentQuestion.question_type === QuestionType.end">
+    <h1>Finished!</h1>
+    <FormKit type="button" @click="() => {}"> Submit </FormKit>
+    <FormKit
+      type="button"
+      @click="() => {}"
+      v-if="!store.currentQuestion.id.endsWith('LAP2_finish')"
+    >
+      Lap 2
+    </FormKit>
   </div>
 
   <div v-else>
-    <h1>j</h1>
+    <h1>UNDER CONSTRUCTION</h1>
   </div>
 
   <FormKit
     type="button"
     @click="store.previousQuestion"
-    v-if="store.currentQuestion.id !== store.questionList[0].id"
+    v-if="
+      store.currentQuestion.id !== store.questionList[0].id &&
+      ![QuestionType.end, QuestionType.other].includes(store.currentQuestion.question_type)
+    "
     >Previous</FormKit
   >
   <FormKit
     type="button"
     @click="store.nextQuestion"
     :disabled="!store.currentResponse"
-    v-if="store.currentQuestion.id !== store.questionList[store.questionList.length - 1].id"
+    v-if="
+      store.currentQuestion.id !== store.questionList[store.questionList.length - 1].id &&
+      ![QuestionType.end, QuestionType.other].includes(store.currentQuestion.question_type)
+    "
     >Next</FormKit
   >
 </template>

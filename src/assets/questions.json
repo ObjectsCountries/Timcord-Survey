@@ -82,7 +82,7 @@
         "id": "finish",
         "title": "Finished!",
         "substitutions": [],
-        "question_type": "end",
+        "question_type": "end_with_lap2",
         "response": null,
         "destination": null
       }
@@ -191,7 +191,7 @@
         "id": "DEBUG_finish",
         "title": "Reached end of debug.",
         "substitutions": [],
-        "question_type": "end",
+        "question_type": "end_with_lap2",
         "response": null,
         "destination": null
       }

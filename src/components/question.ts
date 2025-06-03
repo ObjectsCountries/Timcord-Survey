@@ -13,6 +13,7 @@ export enum QuestionType {
   multiple_choice,
   written_response,
   end,
+  end_with_lap2,
   other,
 }
 
@@ -60,8 +61,8 @@ export default class Question {
   title: string
   substitutions: Substitutions
   question_type: QuestionType = QuestionType.other
-  answers?: MultipleChoiceAnswer[] = []
-  character_limit?: number = -1
+  answers?: MultipleChoiceAnswer[]
+  character_limit?: number
   response: MultipleChoiceAnswer | string | null = null
   destination: string | null = null
 
@@ -69,11 +70,13 @@ export default class Question {
     id: 'ERROR',
     title: 'Something has gone wrong. Please report this to Vice.',
     substitutions: [],
-    question_type: 'other',
+    question_type: 'end',
     response: null,
     destination: null,
   }
   static survey: Survey = surveyQuestions
+
+  static errorQuestion: Question = new Question(Question.defaults, {})
 
   constructor(question: Partial<PrimitiveQuestion> | Lap2Question, substitutions: Substitutions) {
     this.id = question.id ?? Question.defaults.id
@@ -85,6 +88,7 @@ export default class Question {
           (question as PrimitiveQuestion).substitutions.includes(x[0]),
         ),
       )
+      this.destination = question.destination ?? null
       this.question_type =
         QuestionType[(question.question_type ?? QuestionType.other) as keyof typeof QuestionType]
       switch (this.question_type) {
@@ -93,15 +97,12 @@ export default class Question {
           break
         case QuestionType.written_response:
           this.character_limit = question.character_limit ?? -1
-          this.destination = question.destination ?? null
           break
         case QuestionType.intro:
         case QuestionType.end:
-          this.response = null
-          this.destination = null
-          break
+        case QuestionType.end_with_lap2:
         case QuestionType.other:
-          this.destination = question.destination ?? null
+          this.response = null
           break
         default:
           throw new TypeError('Unknown enum type')
@@ -110,7 +111,7 @@ export default class Question {
       this.title = Question.defaults.title
       this.substitutions = Object.fromEntries(
         Object.entries(substitutions ?? {}).filter((x) =>
-          (question as PrimitiveQuestion).substitutions.includes(x[0]),
+          (question as Lap2Question).changes?.substitutions?.includes(x[0]),
         ),
       )
       const [copy_category, copy_question] = ((question as Lap2Question).copy_of ?? '_ _').split(
@@ -125,7 +126,14 @@ export default class Question {
               'questions'
             >
           ].find((x) => x.id === copy_question) ?? null
-        return new Question({ ...copy, ...(question as Lap2Question).changes }, substitutions)
+        return new Question(
+          {
+            ...copy,
+            id: (question as Lap2Question).id,
+            ...(question as Lap2Question).changes,
+          },
+          substitutions,
+        )
       } else {
         throw TypeError('Lap2Question without copy_of found!')
       }

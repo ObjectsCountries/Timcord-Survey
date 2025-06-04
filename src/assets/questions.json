@@ -100,7 +100,7 @@
         "substitutions": 0,
         "question_type": "intro",
         "response": null,
-        "destination": "DEBUG_LAP2_writing_copy"
+        "destination": "LAP2_writing_copy"
       },
       {
         "id": "LAP2_writing_copy",

@@ -6,6 +6,9 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "typeRoots": ["./node_modules/@types"],
 
+     "plugins": [{
+      "name": "typescript-eslint-language-service"
+    }],
     "paths": {
       "@/*": ["./src/*"]
     }
